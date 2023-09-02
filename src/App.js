@@ -1,6 +1,68 @@
 import { useState } from "react";
 import "./App.css";
 import { validateEmail } from "./utils";
+//Theme
+import { ThemeProvider, useTheme } from "./ThemeContext";
+import Switch from "./Switch";
+
+//Light vs Dark Mode
+
+const Title = ({ children }) => {
+  const { theme } = useTheme();
+  return (
+    <h2
+      style={{
+        color: theme === "light" ? "black" : "white",
+      }}
+    >
+      {children}
+    </h2>
+  );
+};
+
+const Paragraph = ({ children }) => {
+  const { theme } = useTheme();
+  return (
+    <p
+      style={{
+        color: theme === "light" ? "black" : "white",
+      }}
+    >
+      {children}
+    </p>
+  );
+};
+
+const Content = () => {
+  return (
+    <div>
+      <Paragraph>
+        We are a pizza loving family. And for years, I searched and searched and
+        searched for the perfect pizza dough recipe. I tried dozens, or more.
+        And while some were good, none of them were that recipe that would make
+        me stop trying all of the others.
+      </Paragraph>
+    </div>
+  );
+};
+
+const Header = () => {
+  return (
+    <header>
+      <Title>Little Lemon 🍕</Title>
+      <Switch />
+    </header>
+  );
+};
+
+const Page = () => {
+  return (
+    <div className="Page">
+      <Title>When it comes to dough</Title>
+      <Content />
+    </div>
+  );
+};
 
 //C- Form
 const PasswordErrorMessage = () => {
@@ -99,8 +161,21 @@ function App() {
     clearForm();
   };
 
+  //Light vs Dark Mode
+  const { theme } = useTheme();
+
   return (
     <>
+      {/* Light vs Dark Mode*/}
+      <div
+        className="App"
+        style={{
+          backgroundColor: theme === "light" ? "white" : "black",
+        }}
+      >
+        <Header />
+        <Page />
+      </div>
       {/* Advanced React List Map to tranform or filter list */}
       <div>
         <ul>{listItems}</ul>
@@ -240,4 +315,12 @@ function App() {
   );
 }
 
-export default App;
+function Root() {
+  return (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  );
+}
+
+export default Root;
